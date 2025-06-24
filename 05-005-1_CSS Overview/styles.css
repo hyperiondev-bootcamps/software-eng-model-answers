@@ -1,0 +1,70 @@
+/* Basic styling for the body */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+/* Styling for main headings */
+h1 {
+  color: #333;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Styling for subheadings */
+h2 {
+  color: #666;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 600px;
+}
+
+/* Styling for paragraphs */
+p {
+  color: #444;
+  margin-bottom: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Styling for images */
+img {
+  display: block;
+  margin: 10px auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for the main container */
+.container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+/* Styling for sections within the container */
+.section {
+  margin-bottom: 40px;
+}
+
+/* Styling for the back to top link */
+a {
+  display: block;
+  text-align: center;
+  color: #007bff;
+  text-decoration: none;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+/* Hover effect for the link */
+a:hover {
+  text-decoration: underline;
+}
