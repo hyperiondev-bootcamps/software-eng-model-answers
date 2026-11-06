@@ -1,0 +1,15 @@
+print("if Statement Task")
+#write a  program that asks the user to enter a number
+print()
+number = int(input("Enter a number: "))
+#if the number is positive print "The number is positive"
+if number > 0:
+    print("The number is positive")
+    #if the number is negative print "The number is negative"
+elif number < 0:
+    print("The number is negative")
+    #if the number is zero print "The number is zero"
+else:
+    print("The number is zero")
+    print()
+    print("if statement Task Completed")
