@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Marketplace - MarketPlace Hub{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+    <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Welcome to MarketPlace Hub</h1>
+    <p style="color: var(--text-muted); font-size: 1.1rem;">
+        Browse unique goods offered by our community of verified independent vendor stores.
+    </p>
+</div>
+
+<!-- Stores Section -->
+<section style="margin-bottom: 3rem;">
+    <h2 class="section-title">🏬 Featured Vendor Stores</h2>
+    {% if stores %}
+        <div class="grid-cards">
+            {% for s in stores %}
+                <div class="card">
+                    <div>
+                        <h3>{{ s.name }}</h3>
+                        <p class="desc">{{ s.description|default:"Independent merchant offering curated goods."|truncatewords:20 }}</p>
+                    </div>
+                    <div class="meta-info">
+                        <span style="font-size: 0.85rem; color: var(--text-muted);">
+                            Owner: <strong>{{ s.owner.username }}</strong>
+                        </span>
+                        <span class="stock-pill">
+                            {{ s.products.count }} products
+                        </span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">No stores have been established yet.</p>
+    {% endif %}
+</section>
+
+<!-- All Products Section -->
+<section>
+    <h2 class="section-title">📦 All Available Products</h2>
+    {% if products %}
+        <div class="grid-cards">
+            {% for p in products %}
+                <div class="card">
+                    <div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.35rem;">
+                            Sold by: <strong>{{ p.store.name }}</strong>
+                        </div>
+                        <h3>{{ p.name }}</h3>
+                        <p class="desc">{{ p.description|default:"No product description provided."|truncatewords:15 }}</p>
+                    </div>
+
+                    <div>
+                        <div class="meta-info">
+                            <span class="price-tag">${{ p.price }}</span>
+                            {% if p.stock > 0 %}
+                                <span class="stock-pill stock-in">In Stock ({{ p.stock }})</span>
+                            {% else %}
+                                <span class="stock-pill stock-out">Out of Stock</span>
+                            {% endif %}
+                        </div>
+
+                        <a href="{% url 'store:product_detail' p.id %}" class="btn btn-primary" style="width: 100%;">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="color: var(--text-muted);">There are currently no products available in the catalogue.</p>
+    {% endif %}
+</section>
+{% endblock %}
+

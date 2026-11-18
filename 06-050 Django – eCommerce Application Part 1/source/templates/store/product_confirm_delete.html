@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirm Deletion - MarketPlace Hub{% endblock %}
+
+{% block content %}
+<div class="form-card" style="text-align: center;">
+    <h1 style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--error-text);">Delete Product?</h1>
+    <p style="color: var(--text-color); margin-bottom: 1.5rem;">
+        Are you sure you want to permanently delete <strong>"{{ product.name }}"</strong> from your store? This action cannot be reversed.
+    </p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div style="display: flex; gap: 1rem;">
+            <a href="{% url 'store:vendor_dashboard' %}" class="btn btn-secondary" style="flex: 1;">Cancel</a>
+            <button type="submit" class="btn btn-danger" style="flex: 1;">Yes, Delete</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+

@@ -1,0 +1,32 @@
+sequenceDiagram
+    autonumber
+    actor User
+    participant Browser as Template / Browser
+    participant View as View (note_create)
+    participant Model as Model (Note)
+    participant DB as SQLite Database
+
+    User->>Browser: Fill note form and click Save
+    Browser->>View: POST /note/new/ (title, content, csrf_token)
+    activate View
+    View->>View: Validate NoteForm (form.is_valid())
+    View->>Model: Create instance (form.save())
+    activate Model
+    Model->>DB: INSERT INTO notes_note (title, content, created_at)
+    activate DB
+    DB-->>Model: Return new record ID
+    deactivate DB
+    Model-->>View: Return saved Note instance
+    deactivate Model
+    View-->>Browser: HTTP 302 Redirect to note_list (/)
+    deactivate View
+    Browser->>View: GET / (request note list)
+    activate View
+    View->>DB: SELECT * FROM notes_note ORDER BY created_at DESC
+    activate DB
+    DB-->>View: QuerySet of notes
+    deactivate DB
+    View-->>Browser: Render note_list.html template (HTTP 200)
+    deactivate View
+    Browser-->>User: Display updated sticky notes list
+

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Confirmed - MarketPlace Hub{% endblock %}
+
+{% block content %}
+<div style="max-width: 700px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎉</div>
+        <h1 style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--success-text);">Thank You for Your Order!</h1>
+        <p style="color: var(--text-muted); font-size: 1.05rem;">
+            Your purchase has been recorded and an itemized purchase invoice was dispatched to <strong>{{ recipient_email }}</strong>.
+        </p>
+    </div>
+
+    <div class="alert alert-warning">
+        <strong>Terminal Console Note:</strong> Because this project is running in local development mode using Django's <code>ConsoleEmailBackend</code>, the complete email invoice was printed directly into your running terminal window!
+    </div>
+
+    <h2 style="font-size: 1.25rem; margin-bottom: 0.75rem;">Generated Purchase Invoice:</h2>
+    <div class="invoice-box">{{ invoice_text }}</div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <a href="{% url 'store:home' %}" class="btn btn-primary">
+            Return to Marketplace
+        </a>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MarketPlace Hub{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+<header>
+    <div class="nav-container">
+        <a href="{% url 'store:home' %}" class="brand-logo">
+            🛒 MarketPlace Hub
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="{% url 'store:home' %}">Marketplace</a></li>
+            <li><a href="{% url 'store:cart_detail' %}">Cart</a></li>
+
+            {% if user.is_authenticated %}
+                {% if user.groups.all.0.name == 'Vendors' or perms.store.add_products %}
+                    <li><a href="{% url 'store:vendor_dashboard' %}" style="color: var(--primary-color); font-weight: 600;">Vendor Dashboard</a></li>
+                {% endif %}
+
+                <li>
+                    <span class="user-badge">
+                        {{ user.username }}
+                        {% if user.groups.all.0 %}
+                            ({{ user.groups.all.0.name }})
+                        {% endif %}
+                    </span>
+                </li>
+                <li><a href="{% url 'store:logout' %}" class="btn btn-secondary btn-sm">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'store:login' %}">Login</a></li>
+                <li><a href="{% url 'store:register' %}" class="btn btn-primary btn-sm">Register</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</header>
+
+<main class="container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2026 MarketPlace Hub</p>
+    </div>
+</footer>
+
+</body>
+</html>
+

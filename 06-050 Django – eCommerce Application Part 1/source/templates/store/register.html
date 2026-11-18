@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - MarketPlace Hub{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h1 style="font-size: 1.6rem; margin-bottom: 0.5rem; text-align: center;">Create an Account</h1>
+    <p style="color: var(--text-muted); text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem;">
+        Join MarketPlace Hub as an independent Vendor or a Buyer.
+    </p>
+
+    {% if error %}
+        <div class="alert alert-error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="{{ username }}" placeholder="Choose a username" required autofocus>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" value="{{ email }}" placeholder="name@example.com" required>
+            <div class="form-help">Used for order invoices and password recovery.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="account_type">Account Role:</label>
+            <select id="account_type" name="account_type" style="padding: 0.6rem; border: 1px solid var(--border-color); border-radius: 6px; width: 100%;">
+                <option value="Buyer" {% if account_type == 'Buyer' %}selected{% endif %}>Buyer (Browse, Review, and Purchase)</option>
+                <option value="Vendor" {% if account_type == 'Vendor' %}selected{% endif %}>Vendor (Sell, Manage Store and Products)</option>
+            </select>
+            <div class="form-help">Vendors receive product inventory management permissions.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Create a secure password" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password_conf">Confirm Password:</label>
+            <input type="password" id="password_conf" name="password_conf" placeholder="Repeat your password" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Register Account</button>
+    </form>
+
+    <div style="margin-top: 1.5rem; text-align: center; font-size: 0.9rem; color: var(--text-muted);">
+        Already registered? <a href="{% url 'store:login' %}" style="color: var(--primary-color); font-weight: 600;">Log in here</a>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,16 @@
+flowchart LR
+    user["User"]
+
+    subgraph app["Sticky Notes Application"]
+        direction TB
+        uc1(["Create Note"])
+        uc2(["View Notes"])
+        uc3(["Update Note"])
+        uc4(["Delete Note"])
+    end
+
+    user --> uc1
+    user --> uc2
+    user --> uc3
+    user --> uc4
+

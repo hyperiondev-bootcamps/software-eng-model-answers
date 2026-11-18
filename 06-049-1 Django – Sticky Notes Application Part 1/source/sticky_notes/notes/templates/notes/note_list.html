@@ -1,0 +1,37 @@
+<!-- notes/templates/notes/note_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}
+Sticky Notes - {{ page_title }}
+{% endblock %}
+
+{% block content %}
+<h2>{{ page_title }}</h2>
+
+<div class="actions-bar">
+    <a href="{% url 'note_create' %}" class="btn btn-primary">+ Add New Note</a>
+</div>
+
+{% if notes %}
+<div class="notes-grid">
+    {% for note in notes %}
+    <div class="sticky-note">
+        <div class="pin"></div>
+        <h3>
+            <a href="{% url 'note_detail' pk=note.pk %}">{{ note.title }}</a>
+        </h3>
+        <p class="note-content">{{ note.content }}</p>
+        <p class="note-date"><small>Created: {{ note.created_at|date:"M d, Y H:i" }}</small></p>
+        <div class="note-actions">
+            <a href="{% url 'note_detail' pk=note.pk %}" class="btn-action">View</a>
+            <a href="{% url 'note_update' pk=note.pk %}" class="btn-action">Edit</a>
+            <a href="{% url 'note_delete' pk=note.pk %}" class="btn-action btn-danger">Delete</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p class="empty-state">No sticky notes found. Click "Add New Note" to create one!</p>
+{% endif %}
+{% endblock %}
+

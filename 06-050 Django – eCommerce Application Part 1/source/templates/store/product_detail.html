@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - MarketPlace Hub{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 1.5rem;">
+    <a href="{% url 'store:home' %}" style="text-decoration: none; color: var(--secondary-color); font-size: 0.95rem;">
+        &larr; Back to Marketplace
+    </a>
+</div>
+
+<div class="detail-container">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+        <div>
+            <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">{{ product.name }}</h1>
+            <p style="color: var(--text-muted); font-size: 1rem;">
+                Sold by <strong>{{ product.store.name }}</strong> (Owner: {{ product.store.owner.username }})
+            </p>
+        </div>
+        <div>
+            <span class="price-tag" style="font-size: 2rem; color: var(--primary-color);">${{ product.price }}</span>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">About this product:</h3>
+        <p style="color: var(--text-color); white-space: pre-line; line-height: 1.6;">
+            {{ product.description|default:"No detailed description provided by the seller." }}
+        </p>
+    </div>
+
+    <div style="padding: 1.25rem; background-color: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 2rem;">
+        <div style="margin-bottom: 1rem;">
+            <strong>Availability:</strong>
+            {% if product.stock > 0 %}
+                <span class="stock-pill stock-in">In Stock ({{ product.stock }} units remaining)</span>
+            {% else %}
+                <span class="stock-pill stock-out">Currently Out of Stock</span>
+            {% endif %}
+        </div>
+
+        {% if product.stock > 0 %}
+            <form action="{% url 'store:add_to_cart' product.id %}" method="POST" style="display: flex; gap: 1rem; align-items: flex-end; max-width: 400px;">
+                {% csrf_token %}
+                <div style="flex: 1;">
+                    <label for="quantity" style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.25rem;">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ product.stock }}" style="width: 100%; padding: 0.6rem; border: 1px solid var(--border-color); border-radius: 6px;" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="flex: 2; padding: 0.65rem 1rem;">
+                    Add to Cart 🛒
+                </button>
+            </form>
+        {% else %}
+            <button class="btn btn-secondary" disabled style="cursor: not-allowed;">Out of Stock</button>
+        {% endif %}
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="reviews-section">
+        <h2 class="section-title">⭐ Customer Reviews &amp; Ratings</h2>
+
+        <!-- Review Submission Form (Logged-in users) -->
+        {% if user.is_authenticated %}
+            <div style="background-color: #f1f5f9; padding: 1.25rem; border-radius: 8px; margin-bottom: 2rem;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 0.75rem;">Leave a Review</h3>
+                <form action="{% url 'store:add_review' product.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="rating">Rating (1 to 5 Stars):</label>
+                        <select id="rating" name="rating" style="max-width: 150px;">
+                            <option value="5">⭐⭐⭐⭐⭐ (5 Stars)</option>
+                            <option value="4">⭐⭐⭐⭐ (4 Stars)</option>
+                            <option value="3">⭐⭐⭐ (3 Stars)</option>
+                            <option value="2">⭐⭐ (2 Stars)</option>
+                            <option value="1">⭐ (1 Star)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="comment">Your Feedback:</label>
+                        <textarea id="comment" name="comment" rows="3" placeholder="Share your experience with this item..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-sm">Submit Review</button>
+                </form>
+            </div>
+        {% else %}
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                Please <a href="{% url 'store:login' %}">log in</a> to write a review.
+            </p>
+        {% endif %}
+
+        <!-- Existing Reviews List -->
+        {% if reviews %}
+            {% for r in reviews %}
+                <div class="review-item">
+                    <div class="review-header">
+                        <span>{{ r.author.username }}</span>
+                        <span class="star-rating">
+                            {% for _ in "x"|rjust:r.rating %}⭐{% endfor %}
+                            ({{ r.rating }}/5)
+                        </span>
+                    </div>
+                    <p style="font-size: 0.95rem; color: #334155; margin-bottom: 0.5rem;">{{ r.comment }}</p>
+                    <small style="color: var(--text-muted);">Posted on {{ r.created_at|date:"M d, Y" }}</small>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="color: var(--text-muted);">No reviews have been submitted for this product yet. Be the first to share your thoughts!</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ action_title }} - MarketPlace Hub{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h1 style="font-size: 1.5rem; margin-bottom: 0.5rem; text-align: center;">{{ action_title }}</h1>
+    <p style="color: var(--text-muted); text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem;">
+        Provide the item details below to update your catalogue.
+    </p>
+
+    {% if error %}
+        <div class="alert alert-error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="name">Product Name:</label>
+            <input type="text" id="name" name="name" value="{{ product.name|default:name }}" placeholder="e.g. Ergonomic Office Chair" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Product Description (Optional):</label>
+            <textarea id="description" name="description" rows="4" placeholder="Detail specifications, dimensions, features, materials...">{{ product.description|default:description }}</textarea>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+            <div class="form-group" style="flex: 1;">
+                <label for="price">Price ($ USD):</label>
+                <input type="number" id="price" name="price" step="0.01" min="0" value="{{ product.price|default:price }}" placeholder="19.99" required>
+            </div>
+
+            <div class="form-group" style="flex: 1;">
+                <label for="stock">Inventory Stock:</label>
+                <input type="number" id="stock" name="stock" min="0" value="{{ product.stock|default:stock }}" placeholder="10" required>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+            <a href="{% url 'store:vendor_dashboard' %}" class="btn btn-secondary" style="flex: 1;">Cancel</a>
+            <button type="submit" class="btn btn-primary" style="flex: 2;">Save Product</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+

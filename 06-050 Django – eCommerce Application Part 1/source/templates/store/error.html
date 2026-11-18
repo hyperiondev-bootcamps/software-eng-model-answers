@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title|default:"Notice" }} - MarketPlace Hub{% endblock %}
+
+{% block content %}
+<div class="form-card" style="text-align: center; max-width: 600px;">
+    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⚠️</div>
+    <h1 style="font-size: 1.6rem; margin-bottom: 0.75rem; color: var(--error-text);">{{ title|default:"Action Not Permitted" }}</h1>
+    <p style="color: var(--text-color); margin-bottom: 1.5rem; line-height: 1.6;">
+        {{ message|default:"An unexpected condition occurred while processing your request." }}
+    </p>
+
+    <div style="display: flex; gap: 1rem; justify-content: center;">
+        <a href="{% url 'store:home' %}" class="btn btn-primary">Return to Marketplace</a>
+        <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+    </div>
+</div>
+{% endblock %}
+

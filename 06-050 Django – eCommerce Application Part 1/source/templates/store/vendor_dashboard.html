@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Vendor Dashboard - MarketPlace Hub{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+    <div>
+        <h1 style="font-size: 2rem;">Vendor Dashboard</h1>
+        <p style="color: var(--text-muted);">Manage your storefront and monitor product inventory.</p>
+    </div>
+    {% if store %}
+        <a href="{% url 'store:add_product' %}" class="btn btn-primary">
+            + Add New Product
+        </a>
+    {% endif %}
+</div>
+
+{% if not store %}
+    <div class="card" style="text-align: center; padding: 3rem 2rem;">
+        <h2 style="margin-bottom: 1rem;">You don't have a storefront yet!</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            Before you can list products and start selling on MarketPlace Hub, you need to set up your store profile.
+        </p>
+        <a href="{% url 'store:create_store' %}" class="btn btn-primary">
+            Create Storefront Now
+        </a>
+    </div>
+{% else %}
+    <!-- Store Profile Summary Card -->
+    <div class="card" style="margin-bottom: 2.5rem; background-color: #f8fafc;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <h2 style="font-size: 1.4rem; margin-bottom: 0.25rem;">{{ store.name }}</h2>
+                <p style="color: var(--text-muted); margin-bottom: 0.5rem;">{{ store.description|default:"No description set." }}</p>
+                <small style="color: var(--secondary-color);">Store Owner: <strong>{{ store.owner.username }}</strong></small>
+            </div>
+            <div style="text-align: right;">
+                <span class="stock-pill stock-in" style="font-size: 0.9rem; padding: 0.4rem 0.8rem;">
+                    {{ products|length }} Listed Products
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Inventory Table -->
+    <h2 class="section-title">📦 Store Product Inventory</h2>
+
+    {% if products %}
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Product Name</th>
+                        <th>Unit Price</th>
+                        <th>Stock Level</th>
+                        <th>Status</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in products %}
+                        <tr>
+                            <td>#{{ p.id }}</td>
+                            <td>
+                                <strong>{{ p.name }}</strong>
+                                <br>
+                                <small style="color: var(--text-muted);">{{ p.description|default:"No description"|truncatewords:8 }}</small>
+                            </td>
+                            <td><strong>${{ p.price }}</strong></td>
+                            <td>{{ p.stock }} units</td>
+                            <td>
+                                {% if p.stock > 0 %}
+                                    <span class="stock-pill stock-in">Available</span>
+                                {% else %}
+                                    <span class="stock-pill stock-out">Out of Stock</span>
+                                {% endif %}
+                            </td>
+                            <td style="text-align: right; white-space: nowrap;">
+                                <a href="{% url 'store:product_detail' p.id %}" class="btn btn-secondary btn-sm" style="margin-right: 0.25rem;">View</a>
+                                <a href="{% url 'store:edit_product' p.id %}" class="btn btn-secondary btn-sm" style="margin-right: 0.25rem;">Edit</a>
+                                <a href="{% url 'store:delete_product' p.id %}" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="background-color: var(--card-bg); border: 1px dashed var(--border-color); border-radius: 8px; padding: 2.5rem; text-align: center;">
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">You have not added any products to your store inventory yet.</p>
+            <a href="{% url 'store:add_product' %}" class="btn btn-primary btn-sm">Add Your First Product</a>
+        </div>
+    {% endif %}
+{% endif %}
+{% endblock %}
+

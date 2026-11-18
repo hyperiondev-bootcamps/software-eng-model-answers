@@ -1,0 +1,26 @@
+classDiagram
+    class Note {
+        +CharField title
+        +TextField content
+        +DateTimeField created_at
+        +__str__() str
+    }
+
+    class NoteForm {
+        +Meta meta
+        +is_valid() bool
+        +save(commit) Note
+    }
+
+    class NoteViews {
+        +note_list(request) HttpResponse
+        +note_detail(request, pk) HttpResponse
+        +note_create(request) HttpResponse
+        +note_update(request, pk) HttpResponse
+        +note_delete(request, pk) HttpResponse
+    }
+
+    NoteForm ..> Note : creates / validates
+    NoteViews ..> NoteForm : instantiates
+    NoteViews ..> Note : queries / persists
+

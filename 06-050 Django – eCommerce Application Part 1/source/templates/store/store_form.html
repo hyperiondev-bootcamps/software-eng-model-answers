@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Store - MarketPlace Hub{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h1 style="font-size: 1.5rem; margin-bottom: 0.5rem; text-align: center;">Set Up Your Storefront</h1>
+    <p style="color: var(--text-muted); text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem;">
+        Establish your digital brand and start offering goods to customers across MarketPlace Hub.
+    </p>
+
+    {% if error %}
+        <div class="alert alert-error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="name">Store Name:</label>
+            <input type="text" id="name" name="name" placeholder="e.g. Vintage Treasures" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Store Description (Optional):</label>
+            <textarea id="description" name="description" rows="4" placeholder="Describe the kind of products your storefront provides..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Create Storefront</button>
+    </form>
+</div>
+{% endblock %}
+

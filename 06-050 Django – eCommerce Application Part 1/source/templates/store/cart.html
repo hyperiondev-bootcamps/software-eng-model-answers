@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Shopping Cart - MarketPlace Hub{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+    <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Your Shopping Cart</h1>
+    <p style="color: var(--text-muted);">Review selected items from across our independent vendor storefronts.</p>
+</div>
+
+{% if error %}
+    <div class="alert alert-error">{{ error }}</div>
+{% endif %}
+
+{% if cart_items %}
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Store</th>
+                    <th>Unit Price</th>
+                    <th style="width: 140px;">Quantity</th>
+                    <th>Subtotal</th>
+                    <th style="text-align: right;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                    <tr>
+                        <td>
+                            <strong>{{ item.product.name }}</strong>
+                        </td>
+                        <td style="color: var(--text-muted);">
+                            {{ item.product.store.name }}
+                        </td>
+                        <td>${{ item.product.price }}</td>
+                        <td>
+                            <form action="{% url 'store:update_cart' item.product.id %}" method="POST" style="display: flex; gap: 0.5rem; align-items: center;">
+                                {% csrf_token %}
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" style="width: 65px; padding: 0.35rem; border: 1px solid var(--border-color); border-radius: 4px;">
+                                <button type="submit" class="btn btn-secondary btn-sm" title="Update quantity">Update</button>
+                            </form>
+                        </td>
+                        <td><strong>${{ item.subtotal }}</strong></td>
+                        <td style="text-align: right;">
+                            <a href="{% url 'store:remove_from_cart' item.product.id %}" class="btn btn-danger btn-sm">Remove</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; background-color: var(--card-bg); padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+        <a href="{% url 'store:home' %}" class="btn btn-secondary">
+            &larr; Continue Shopping
+        </a>
+
+        <div style="text-align: right;">
+            <div style="font-size: 1rem; color: var(--text-muted); margin-bottom: 0.25rem;">Order Total:</div>
+            <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem;">
+                ${{ total }}
+            </div>
+
+            {% if user.is_authenticated %}
+                <form action="{% url 'store:checkout' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary" style="font-size: 1.05rem; padding: 0.75rem 1.75rem;">
+                        Proceed to Checkout &rarr;
+                    </button>
+                </form>
+            {% else %}
+                <a href="{% url 'store:login' %}?next={% url 'store:checkout' %}" class="btn btn-primary">
+                    Log In to Checkout &rarr;
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% else %}
+    <div style="background-color: var(--card-bg); border: 1px dashed var(--border-color); border-radius: 8px; padding: 3rem; text-align: center;">
+        <h2 style="font-size: 1.3rem; margin-bottom: 0.5rem;">Your cart is currently empty</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">You haven't added any products to your cart yet.</p>
+        <a href="{% url 'store:home' %}" class="btn btn-primary">Explore Products</a>
+    </div>
+{% endif %}
+{% endblock %}
+

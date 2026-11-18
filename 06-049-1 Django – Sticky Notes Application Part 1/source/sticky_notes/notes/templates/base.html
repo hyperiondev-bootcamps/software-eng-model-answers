@@ -1,0 +1,41 @@
+<!-- notes/templates/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        {% block title %}
+        Sticky Notes
+        {% endblock title %}
+    </title>
+    <!-- Link to sticky notes stylesheet -->
+    <link rel="stylesheet" href="{% static 'notes/styles.css' %}" />
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>
+                {% block header %}
+                Sticky Notes Application
+                {% endblock header %}
+            </h1>
+            <nav>
+                <a href="{% url 'note_list' %}">All Notes</a>
+                <a href="{% url 'note_create' %}">+ New Note</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock content %}
+    </main>
+
+    <footer>
+        <p>&copy; Sticky Notes Application &mdash; Django MVT Architecture</p>
+    </footer>
+</body>
+</html>
+
