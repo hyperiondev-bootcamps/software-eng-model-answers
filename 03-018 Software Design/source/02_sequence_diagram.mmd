@@ -1,0 +1,25 @@
+sequenceDiagram
+    autonumber
+    actor User as User
+    participant View as TaskView
+    participant Controller as TaskController
+    participant Model as TaskModel
+    participant Storage as File Storage (tasks.json)
+
+    User->>View: Enter task details (title, description)
+    activate View
+    View->>Controller: Pass task data (title, description)
+    activate Controller
+    Controller->>Model: create(title, description)
+    activate Model
+    Model->>Storage: Write task data (save_to_file)
+    activate Storage
+    Storage-->>Model: File write confirmed
+    deactivate Storage
+    Model-->>Controller: Return new Task object
+    deactivate Model
+    Controller-->>View: Notify task created successfully
+    deactivate Controller
+    View-->>User: Display success message
+    deactivate View
+

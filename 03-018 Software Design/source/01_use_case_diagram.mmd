@@ -1,0 +1,15 @@
+flowchart LR
+    User["User"]
+
+    subgraph SystemBoundary ["Task Manager Application"]
+        UC1(["Create Task"])
+        UC2(["View Tasks"])
+        UC3(["Update Task"])
+        UC4(["Delete Task"])
+    end
+
+    User --- UC1
+    User --- UC2
+    User --- UC3
+    User --- UC4
+

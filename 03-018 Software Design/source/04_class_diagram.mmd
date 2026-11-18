@@ -1,0 +1,37 @@
+classDiagram
+    class Task {
+        +int task_id
+        +str title
+        +str description
+        +bool is_completed
+    }
+
+    class TaskModel {
+        -str filepath
+        -list tasks
+        +create(title, description) Task
+        +get_all() list
+        +update(task_id, title, description, is_completed) bool
+        +delete(task_id) bool
+        +save_to_file() void
+        +load_from_file() void
+    }
+
+    class TaskView {
+        +show_menu() void
+        +get_input(prompt) str
+        +display_tasks(tasks) void
+        +show_message(message) void
+    }
+
+    class TaskController {
+        -TaskModel model
+        -TaskView view
+        +run() void
+        +handle_user_choice(choice) void
+    }
+
+    TaskModel "1" o-- "*" Task : contains
+    TaskController --> TaskModel : calls
+    TaskController --> TaskView : interacts with
+
