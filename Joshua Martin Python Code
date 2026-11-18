@@ -1,0 +1,51 @@
+print("My first Python script")
+#print for my first script
+print()
+#print to add a blank line
+user_name = input("Enter your name:")
+#input to get user name
+print()
+#print to add a blank line
+print("Hello " + user_name)
+#print to greet user
+print()
+#print to add a blank line
+user_age = input("Enter your age:")
+#input to get user age
+print()
+#print to add a blank line
+print ("you are " + user_age + " years old")
+#print to tell user age
+print()
+#print to add a blank line
+user_city = input("Enter your city:")
+#input to get user city
+print()
+#print to add a blank line
+print(" you live in " + user_city)
+#print to tell user city
+print()
+#print to add a blank line
+user_date = input("Enter todays date:")
+#input to get todays date
+print()
+#print to add a blank line
+print("Todays date is " + user_date , "correct?") 
+#print to tell todays date
+user_input =input("Enter yes or no:")
+#input to get user confirmation
+if user_input == "yes":
+    print("thank you")
+    #print to thank user
+    print()
+    #print to add a blank line
+else :
+    print ("sorry to hear that")
+    #print to express regret
+    print()
+    #print to add a blank line
+    correct_date = input("Enter the correct date:")
+    #input to get correct date
+    print()
+    #print to add a blank line
+    print("thank you")
